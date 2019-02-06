@@ -3,36 +3,36 @@ import { FormsModule } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ActivatedRoute } from '@angular/router';
 
-import { UsersService } from '../users.service';
-import { User } from '../user';
+import { ArticlesService } from '../articles.service';
+import { Article } from '../article';
 
 @Component({
-  selector: 'app-user-edit',
-  templateUrl: './user-edit.component.html',
+  selector: 'app-article-edit',
+  templateUrl: './article-edit.component.html',
   styleUrls: ['../app.component.scss',
-    './user-edit.component.scss']
+    './article-edit.component.scss']
 })
-export class UserEditComponent implements OnInit {
+export class ArticleEditComponent implements OnInit {
 
-  user: User;
+  article: Article;
   errors: Array<any> = [];
   errorMessage: string;
 
   constructor(
-    private usersService: UsersService,
+    private articlesService: ArticlesService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.getUser(id);
+    this.getArticle(id);
   }
 
-  getUser(id): void {
-    this.usersService.getUser(id).subscribe(
+  getArticle(id): void {
+    this.articlesService.getArticle(id).subscribe(
       (response: any) => {
-      this.user = response.user
+      this.article = response.article
       }
     );
   }
@@ -44,12 +44,12 @@ export class UserEditComponent implements OnInit {
     }
 
     if(response.success===true){
-      this.router.navigate(['/users/view/', response.user._id]);
+      this.router.navigate(['/articles/view/', response.article._id]);
     }
   }
 
   onSubmit(): void {
-    this.usersService.editUser(this.user).subscribe(
+    this.articlesService.editArticle(this.article).subscribe(
       (response) => {
         this.response(response)
       }
